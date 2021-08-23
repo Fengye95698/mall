@@ -1,0 +1,237 @@
+<template>
+  <div>
+    <topnav class="boxnav">
+      <div
+        slot="left"
+        class="el-icon-arrow-left"
+        @click="
+          () => {
+            this.$router.push('/category');
+          }
+        "
+        style="font-size:20px"
+      ></div>
+      <div slot="middle">购物车</div>
+      <div slot="right" class="icon"></div>
+    </topnav>
+    <div class="login">
+      <span>登录后同步电脑与手机购物车中的商品</span>
+      <button>登录</button>
+    </div>
+    <div class="item">
+      <div class="head">
+        <el-radio v-model="radio" label="1">分红布娃娃</el-radio>
+        <span style="color:red">优惠券></span>
+      </div>
+      <div class="contentbox">
+        <el-radio v-model="radio" label="1">
+          <div class="content">
+            <img src="@/../static/details/biubiu.jpg" alt="" />
+            <div class="goodsdetail">
+              <div class="title">卫衣女中款分红大布娃娃预</div>
+              <span class="descr">重量:0.45kg 颜色:AT800/16</span>
+              <div class="price">
+                <span>￥155.00</span>
+                <div class="countInfo">
+                  <button>+</button>
+                  <span>0</span>
+                  <button>-</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-radio>
+      </div>
+      <div class="foot">
+        <img src="@/../static/cart/delete_up.png" alt="" />
+        <img src="@/../static/cart/delete_down.png" alt="" />
+      </div>
+    </div>
+    <div class="item">
+      <div class="head">
+        <el-radio v-model="radio" label="2">分红布娃娃</el-radio>
+        <span style="color:red">优惠券></span>
+      </div>
+      <div class="contentbox">
+        <el-radio v-model="radio" label="2">
+          <div class="content">
+            <img src="@/../static/details/biubiu.jpg" alt="" />
+            <div class="goodsdetail">
+              <div class="title">卫衣女中款分红大布娃娃预</div>
+              <span class="descr">重量:0.45kg 颜色:AT800/16</span>
+              <div class="price">
+                <span>￥155.00</span>
+                <div class="countInfo">
+                  <button>+</button>
+                  <span>0</span>
+                  <button>-</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-radio>
+      </div>
+      <div class="foot">
+        <img src="@/../static/cart/delete_up.png" alt="" />
+        <img src="@/../static/cart/delete_down.png" alt="" />
+      </div>
+    </div>
+    <div class="buytabbar">
+      <el-radio v-model="radio" label="3">全选</el-radio>
+      <div class="buyItem">
+        <div class="left">
+          <h4>合计:￥537.80</h4>
+          <div class="sub">总额:￥537.80 立减:￥0.00</div>
+        </div>
+        <div class="right">
+          <button>去计算</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import topnav from "../components/topNav/topnav.vue";
+export default {
+  data() {
+    return {
+      radio: "1",
+    };
+  },
+  components: { topnav },
+};
+</script>
+
+<style scoped>
+.icon{width: 39px;height: 44px;background: url('../../static/home/jd-sprites.png') no-repeat  -120px 0;margin:5px 0 0px 0px;transform: scale(0.5);}
+.buytabbar {
+  border-top: 1px solid gray;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+.buyItem {
+  display: flex;
+  padding: 15px;
+}
+.left {
+  flex: 3;
+  width: 180px;
+}
+.sub {
+  font-size: 5px;
+  color: rgb(192, 185, 185);
+}
+.right button {
+  width: 70px;
+  height: 100%;
+  background-color: red;
+  color: white;
+  border: none;
+}
+.item {
+  padding: 15px;
+  box-shadow: 0px 2px rgb(211, 208, 208);
+  height: 180px;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+}
+.content {
+  display: flex;
+  justify-content: center;
+}
+.content img {
+  width: 30%;
+  height: 30%;
+}
+.goodsdetail {
+  margin-left: 3%;
+}
+.title {
+  font-weight: bold;
+  font-size: 15px;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+}
+.descr {
+  color: rgb(194, 190, 190);
+}
+.price {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20%;
+}
+.price span:nth-child(1) {
+  color: red;
+  font-size: 15px;
+  font-weight: bold;
+}
+.countInfo {
+  margin-left: 10px;
+}
+.countInfo button {
+  width: 25px;
+  height: 20px;
+  border-radius: 1px;
+  border: 1px solid rgb(209, 203, 203);
+  background-color: #fff;
+}
+.countInfo span {
+  border: none;
+  border-radius: 1px;
+  display: inline-block;
+  width: 25px;
+  text-align: center;
+  height: 15px;
+}
+.foot {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 86%;
+}
+.foot img:nth-child(1) {
+  margin-bottom: -10%;
+}
+.foot img {
+  width:55%;
+  
+}
+.boxnav {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(209, 207, 207);
+  text-align: center;
+}
+.login {
+  color: rgb(168, 169, 171);
+  padding: 15px;
+  border-bottom: 1px solid rgb(209, 207, 207);
+  font-size: 15px;
+  text-align: center;
+}
+.login button {
+  width: 55px;
+  height: 30px;
+  background-color: rgb(241, 84, 83);
+  color: white;
+  border: none;
+  margin-left: 10px;
+}
+</style>
+<style>
+.el-radio__input.is-checked + .el-radio__label {
+  color: red;
+}
+.el-radio {
+  padding-top: 5%;
+  padding-left: 5%;
+  font-weight: bold;
+}
+</style>
