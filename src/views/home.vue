@@ -36,6 +36,7 @@ import HomeCate from "../components/homeCate.vue";
 import MomentSale from "../components/momentSale.vue";
 import Recommend from "../components/recommend.vue";
 import Tabbar from '../components/tabbar/tabbar.vue';
+
 export default {
   components: { topnav, Swiper, HomeCate, MomentSale, Recommend, Tabbar },
   data() {
@@ -43,9 +44,7 @@ export default {
       swiperImg: [pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8],
     };
   },
-  mounted(){
-    // console.log(this.$refs.swiper.getInfo);
-  }
+
 };
 
 </script>

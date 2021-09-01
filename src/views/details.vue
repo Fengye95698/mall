@@ -7,17 +7,18 @@
     </topnav>
     <!-- {{this.$route.query.id}} -->
     <div class="box">
-      <img src="@/../static/details/biubiu.jpg" alt="" />
+      <img :src="detailInfo[0].imgUrl" alt="" />
       <div class="context">
-        <h5>九分袖 短款SL546031</h5>
+        <h5>{{detailInfo[0].product_name}}</h5>
         <div class="price">
-          <span>￥379.00</span>
+          <span>￥{{detailInfo[0].product_uprice}}</span>
           <button>降价通知</button>
         </div>
       </div>
     </div>
     <div class="content">
-        <span>九分袖 短款SL546031九分袖 短款SL546031九分袖 短款SL546031九分袖 短款SL546031九分袖 短款SL546031</span> 
+      <!-- <span>{{$route.query}}</span> -->
+        <span>{{detailInfo[0].product_detail}}</span> 
     </div>
     <div class="tabbar">
         <div class="tab-item">
@@ -44,11 +45,39 @@
 
 <script>
 import Topnav from "../components/topNav/topnav";
+import { request } from '../network/request';
 
 export default {
   components: { Topnav },
+  data(){
+    return{
+      detailInfo:[
+        {
+          imgUrl:'',
+          product_name:'',
+          product_uprice:'',
+          product_detail:''
+        }
+      ]
+    }
+  },
   mounted() {
     // console.log(this.$route);
+    request({
+      url:'/detail',
+      params:{
+        mId:this.$route.query.mId
+      }
+    }).then(res=>{
+      console.log(
+        res
+      );
+      this.detailInfo[0]['imgUrl'] = res.data[1][0].product_img_url
+      this.detailInfo[0].product_name = res.data[1][0].product_name
+      this.detailInfo[0].product_uprice = res.data[1][0].product_uprice
+      this.detailInfo[0].product_detail = res.data[1][0].product_detail
+      console.log(this.detailInfo[0]['imgUrl']);
+    })
   },
 };
 </script>

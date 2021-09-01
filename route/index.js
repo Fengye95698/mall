@@ -4,8 +4,8 @@ const common = require('../libs/common');
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '123456',
-    database: 'test'
+    password: '12345678',
+    database: 'myigou'
 });
 module.exports = () => {
     const route = express.Router();
@@ -161,8 +161,11 @@ module.exports = () => {
         for (let obj in req.body) {
             mObj = JSON.parse(obj);
         }
+        console.log(mObj);
         let regName = mObj.regName;
+        // console.log(regName);
         let regPasswd = mObj.regPasswd;
+        // console.log(regPasswd);
         regPasswd = common.md5(regPasswd + common.MD5_SUFFXIE);
         const insUserInfo = `INSERT INTO user(user_name,login_password,user_number) VALUES('${regName}','${regPasswd}','${regName}')`;
         delReg(insUserInfo, res);

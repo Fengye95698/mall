@@ -78,7 +78,7 @@ export default {
   display: flex;
   text-align: center;
   overflow: hidden;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
 }
 .box .item {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <topnav class="boxnav">
-      <div slot="left" class="el-icon-arrow-left"  style="font-size:20px"></div>
+      <div slot="left" class="el-icon-arrow-left" style="font-size: 20px"></div>
       <div slot="middle">
         <el-input
           type="text"
@@ -13,26 +13,33 @@
       <div slot="right" class="icon"></div>
     </topnav>
     <tabbar></tabbar>
-    <el-tabs :tab-position="tabPosition" class="el-tabs">
-      <el-tab-pane label="手机">
+    <el-tabs
+      :tab-position="tabPosition"
+      class="el-tabs"
+      @tab-click="getCateGoods(categorylist[currentIndex].category_id)"
+    >
+      <el-tab-pane
+        :label="item.category_name"
+        v-for="item in categorylist"
+        :key="item.product_id"
+      >
         <hot-cate></hot-cate>
         <div class="goodsItem">
-          <div class="itembox" v-for="item in goodsList" :key="item.id" @click="toDetail(item.id)">
-            <img :src="item.url" alt="" />
-            <div class="goodstext">{{item.name}}</div>
+          <div
+            class="itembox"
+            v-for="item in goodsList"
+            :key="item.product_id"
+            @click="toDetail(item.product_id)"
+          >
+            <img :src="item.product_img_url" alt="" />
+            <div class="goodstext">{{ item.product_name }}</div>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="托运箱">托运箱</el-tab-pane>
-      <el-tab-pane label="双肩包">双肩包</el-tab-pane>
-      <el-tab-pane label="旅行包">旅行包</el-tab-pane>
-      <el-tab-pane label="登机箱">登机箱</el-tab-pane>
-      <el-tab-pane label="拉杠箱">拉杠箱</el-tab-pane>
-      <el-tab-pane label="糖果">糖果</el-tab-pane>
-      <el-tab-pane label="肌肉类零食">肌肉类零食</el-tab-pane>
-      <el-tab-pane label="饼干">饼干</el-tab-pane>
-      <el-tab-pane label="西式糕点">西式糕点</el-tab-pane>
-      <el-tab-pane label="文具">文具</el-tab-pane>
+      <!-- <el-tab-pane label="手机">
+        
+
+      </el-tab-pane> -->
     </el-tabs>
   </div>
 </template>
@@ -41,65 +48,76 @@
 import HotCate from "../components/hotCate.vue";
 import tabbar from "../components/tabbar/tabbar.vue";
 import Topnav from "../components/topNav/topnav.vue";
-import pic from '@/../static/momentsale/test.jpg'
+import { request } from "../network/request";
 export default {
   components: { tabbar, Topnav, HotCate },
   data() {
     return {
       tabPosition: "left",
-      goodsList: [
-        {
-          id: 0,
-          url: pic,
-          name: "思慕尔 专业",
-        },
-        {
-          id: 1,
-          url: pic,
-          name: "思慕尔 专业",
-        },
-        {
-          id: 2,
-          url: pic,
-          name: "思慕尔 专业",
-        },
-        {
-          id: 3,
-          url: pic,
-          name: "思慕尔 专业",
-        },
-        {
-          id: 4,
-          url: pic,
-          name: "思慕尔 专业",
-        },
-        {
-          id: 5,
-          url: pic,
-          name: "思慕尔 专业",
-        },
-      ],
+      loading:false,
+      count: 10,
+      currentIndex: 1,
+      goodsList: [],
+      categorylist: [],
     };
   },
-  methods:{
-    toDetail(id){
+  methods: {
+    getCateGoods(category_id) {
+      console.log(category_id);
+      this.currentIndex += 1;
+      request({
+        url: "/categorygoods",
+        params: {
+          mId: category_id,
+        },
+      }).then((res) => {
+        // console.log(res);
+        this.goodsList = res.data;
+      });
+    },
+    toDetail(id) {
       // console.log(this.$route.query.id);
       this.$router.push({
-        path:'/details',
-        query:{
-          id:id
-        }
-      })
-    }
+        path: "/details",
+        query: {
+          mId: id,
+        },
+      });
+    },
+  },
+  mounted() {
+    request({
+      url: "/category",
+      method: "get",
+    }).then((res) => {
+      // console.log(res);
+      this.categorylist = res.data;
+    });
+    request({
+      url: "/categorygoods",
+      params: {
+        mId: 34,
+      },
+    }).then((res) => {
+      this.goodsList = res.data;
+    });
   }
-
-};
+  }
 </script>
 
 <style scoped>
 /* .iconbox{width: 50%;} */
-.icon{width: 39px;height: 44px;background: url('../../static/home/jd-sprites.png') no-repeat  -120px 0;margin:5px 0 0px 15px;transform: scale(0.5);}
-.goodstext{font-size: 14px;font-weight: bold;}
+.icon {
+  width: 39px;
+  height: 44px;
+  background: url("../../static/home/jd-sprites.png") no-repeat -120px 0;
+  margin: 5px 0 0px 15px;
+  transform: scale(0.5);
+}
+.goodstext {
+  font-size: 14px;
+  font-weight: bold;
+}
 .goodsItem {
   display: flex;
   flex-wrap: wrap;
