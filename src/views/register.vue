@@ -24,8 +24,32 @@
 
 <script>
 import Topnav from "../components/topNav/topnav.vue";
+import { request } from '../network/request';
 export default {
+  data(){
+    return{
+      mObj:{
+        regName:'test',
+        regPasswd:'1234'
+      }
+    }
+  },
   components: { Topnav },
+  mounted(){
+    request({
+      url:'/reg',
+      method:'post',
+      // headers: new Headers({
+      //       'Content-Type': 'application/x-www-form-urlencoded'  // 不进行header设置的默认格式
+      //     }),
+      data:{
+        regName:this.mObj.regName,
+        regPasswd:this.mObj.regPasswd
+      }
+    }).then(res=>{
+      console.log(res);
+    })
+  }
 };
 </script>
 

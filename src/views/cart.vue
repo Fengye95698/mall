@@ -9,7 +9,7 @@
             this.$router.push('/category');
           }
         "
-        style="font-size:20px"
+        style="font-size: 20px"
       ></div>
       <div slot="middle">购物车</div>
       <div slot="right" class="icon"></div>
@@ -18,7 +18,7 @@
       <span>登录后同步电脑与手机购物车中的商品</span>
       <button>登录</button>
     </div>
-    <div class="item">
+    <!-- <div class="item">
       <div class="head">
         <el-radio v-model="radio" label="1">分红布娃娃</el-radio>
         <span style="color:red">优惠券></span>
@@ -75,12 +75,13 @@
         <img src="@/../static/cart/delete_up.png" alt="" />
         <img src="@/../static/cart/delete_down.png" alt="" />
       </div>
-    </div>
+    </div> -->
     <div class="buytabbar">
-      <el-radio v-model="radio" label="3">全选</el-radio>
+      <!-- <el-radio v-model="radio" label="3">全选</el-radio> -->
+      <van-button type="primary" @click="checkAll">全选</van-button>
       <div class="buyItem">
         <div class="left">
-          <h4>合计:￥537.80</h4>
+          <h4>合计:￥537</h4>
           <div class="sub">总额:￥537.80 立减:￥0.00</div>
         </div>
         <div class="right">
@@ -88,23 +89,128 @@
         </div>
       </div>
     </div>
+    <van-checkbox-group v-model="result" ref="checkboxGroup" v-show="isAlive" style="height:1500px">
+      <van-checkbox :name="item.cart_id" class="item" label-disabled v-for="(item,index) in cartList" :key="item.cart_id" > 
+        <div class="head">
+          <div class="sty" :class="{ active: isActive }">{{item.shop_name}}</div>
+          <span style="color: red">优惠券></span>
+        </div>
+        <div class="contentbox">
+          <div class="sty">
+            <div class="content">
+              <img :src="item.product_img_url" alt="" />
+              <div class="goodsdetail">
+                <div class="title">{{item.product_name}}</div>
+                <!-- <span class="descr">重量:0.45kg 颜色:AT800/16</span> -->
+                <div class="price">
+                  <span>￥{{item.product_uprice}}</span>
+                  <div class="countInfo">
+                    <button @click="addCount(index)">+</button>
+                    <span>{{ item.goods_num }}</span>
+                    <button @click="subCount(index)">-</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="foot" @click.stop="clearGood(index)">
+          <img src="@/../static/cart/delete_up.png" alt="" />
+          <img src="@/../static/cart/delete_down.png" alt="" />
+        </div>
+      </van-checkbox>
+      <!-- <van-checkbox name="c">复选框 c</van-checkbox> -->
+    </van-checkbox-group>
+    <div v-show="!isAlive">没有商品啦~~~~~</div>
   </div>
 </template>
 
 <script>
 import topnav from "../components/topNav/topnav.vue";
+import { request } from '../network/request';
 export default {
   data() {
     return {
-      radio: "1",
+      result: [],
+      isChoose: true,
+      isActive: false,
+      num: 1,
+      isAlive: true,
+      cartList:[]
     };
   },
+  computed:{
+    getTotal(count,price){
+      return count*price;
+    }
+  },
+  methods: {
+    checkAll() {
+      this.$refs.checkboxGroup.toggleAll(this.isChoose);
+      this.isChoose = !this.isChoose;
+    },
+    clearGood(index) {
+      // console.log(index);
+      for(let i = 0;i<this.cartList.length;i++){
+        if(i === index && this.cartList.length >0){
+          this.cartList.splice(i,1);
+          // console.log();
+          if(this.cartList.length == 0){
+            this.isAlive = !this.isAlive; 
+          }
+        }
+        //  
+      }
+      
+    },
+    addCount(index) {
+      // console.log(index);
+      for(let i = 0;i<this.cartList.length;i++){
+        if(i == index){
+          this.cartList[i].goods_num += 1
+          this.num+=1
+        }
+      }
+      
+    },
+    subCount(index) {
+      if (this.num >= 1) {
+        for(let i = 0;i<this.cartList.length;i++){
+        if(i == index && this.cartList[i].goods_num>1){
+          this.cartList[i].goods_num -= 1
+          this.num -=1
+        }
+      }
+      }
+    },
+  },
   components: { topnav },
+  mounted(){
+    request({
+      url:'/cart'
+    }).then(res=>{
+      console.log(res);
+      this.cartList = res.data;
+      console.log(this.cartList);
+    })
+  }
 };
 </script>
 
 <style scoped>
-.icon{width: 39px;height: 44px;background: url('../../static/home/jd-sprites.png') no-repeat  -120px 0;margin:5px 0 0px 0px;transform: scale(0.5);}
+.van-button {
+  margin: 10px;
+  background-color: rgb(255, 123, 0);
+  border: none;
+  border-radius: 5px;
+}
+.icon {
+  width: 39px;
+  height: 44px;
+  background: url("../../static/home/jd-sprites.png") no-repeat -120px 0;
+  margin: 5px 0 0px 0px;
+  transform: scale(0.5);
+}
 .buytabbar {
   border-top: 1px solid gray;
   position: fixed;
@@ -113,6 +219,9 @@ export default {
   bottom: 0;
   display: flex;
   justify-content: flex-start;
+  z-index: 20;
+  /* top: 200px; */
+  background-color: #fff;
 }
 .buyItem {
   display: flex;
@@ -134,9 +243,9 @@ export default {
   border: none;
 }
 .item {
-  padding: 15px;
+  padding: 5px;
   box-shadow: 0px 2px rgb(211, 208, 208);
-  height: 180px;
+  height: 190px;
 }
 .head {
   display: flex;
@@ -165,7 +274,7 @@ export default {
 .price {
   display: flex;
   justify-content: space-between;
-  margin-top: 20%;
+  margin-top: 0%;
 }
 .price span:nth-child(1) {
   color: red;
@@ -174,6 +283,7 @@ export default {
 }
 .countInfo {
   margin-left: 10px;
+  /* z-index: 10; */
 }
 .countInfo button {
   width: 25px;
@@ -195,13 +305,14 @@ export default {
   flex-direction: column;
   position: absolute;
   left: 86%;
+  margin-top: 5px;
+  /* top: 3%; */
 }
 .foot img:nth-child(1) {
   margin-bottom: -10%;
 }
 .foot img {
-  width:55%;
-  
+  width: 55%;
 }
 .boxnav {
   display: flex;
@@ -226,12 +337,16 @@ export default {
 }
 </style>
 <style>
-.el-radio__input.is-checked + .el-radio__label {
+.active {
   color: red;
 }
-.el-radio {
+.sty {
   padding-top: 5%;
   padding-left: 5%;
   font-weight: bold;
+}
+.van-checkbox-group {
+  overflow-y: auto;
+  overflow: hidden;
 }
 </style>

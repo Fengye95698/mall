@@ -5,15 +5,25 @@
         <span class="background"><div class="icon1"></div></span>
       </div>
       <div slot="middle" class="middle">
-          <el-input
-          type="text"
-          placeholder="搜索"
-          prefix-icon="el-icon-search"
-        />
+        <el-input type="text" placeholder="搜索" prefix-icon="el-icon-search" />
       </div>
-      <div slot="right" class="right" @click="()=>{this.$router.push('/login')}">登录</div>
+      <div
+        slot="right"
+        class="right"
+        @click="
+          () => {
+            this.$router.push('/login');
+          }
+        "
+      >
+        登录
+      </div>
     </topnav>
-    <swiper :picList="swiperImg" ></swiper>
+    <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
+      <van-swipe-item v-for="item in swiperImg" :key="item">
+        <img :src='item' />
+      </van-swipe-item>
+    </van-swipe>
     <home-cate ref="swiper"></home-cate>
     <moment-sale></moment-sale>
     <recommend />
@@ -22,7 +32,6 @@
 </template>
 
 <script>
-import Swiper from "../components/swiper.vue";
 import topnav from "../components/topNav/topnav.vue";
 import pic1 from "@/../static/swiper/l1.jpg";
 import pic2 from "@/../static/swiper/l2.jpg";
@@ -35,22 +44,30 @@ import pic8 from "@/../static/swiper/l8.jpg";
 import HomeCate from "../components/homeCate.vue";
 import MomentSale from "../components/momentSale.vue";
 import Recommend from "../components/recommend.vue";
-import Tabbar from '../components/tabbar/tabbar.vue';
+import Tabbar from "../components/tabbar/tabbar.vue";
 
 export default {
-  components: { topnav, Swiper, HomeCate, MomentSale, Recommend, Tabbar },
+  components: { topnav, HomeCate, MomentSale, Recommend, Tabbar },
   data() {
     return {
       swiperImg: [pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8],
     };
   },
-
 };
-
 </script>
 
 <style scoped>
-.topnav{background-color: rgb(21, 93, 201);box-shadow: rgb(76, 146, 211)1px 1px;}
+.my-swipe .van-swipe-item {
+  position: relative;
+}
+.my-swipe .van-swipe-item >img{
+  width: 100%;
+  height: 100%;
+}
+.topnav {
+  background-color: rgb(21, 93, 201);
+  box-shadow: rgb(76, 146, 211) 1px 1px;
+}
 .left {
   display: flex;
   transform: scale(0.8);
@@ -64,7 +81,6 @@ span {
 }
 .icon1 {
   background-position: 10px -440px;
-  
 }
 .middle {
   text-align: center;

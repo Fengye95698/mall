@@ -156,17 +156,20 @@ module.exports = () => {
     }
     // 用户注册
     route.post('/reg', (req, res) => {
+        let regName = req.query.regName;
+        let regPasswd = req.query.regPasswd;
+        console.log(regName,regPasswd);
+        // let mObj = {};
+        // for (let obj in req.body) {
+        //     mObj = JSON.parse(obj);
+        // }
 
-        let mObj = {};
-        for (let obj in req.body) {
-            mObj = JSON.parse(obj);
-        }
-        console.log(mObj);
-        let regName = mObj.regName;
+        // console.log(mObj);
+        // let regName = mObj.regName;
         // console.log(regName);
-        let regPasswd = mObj.regPasswd;
+        // let regPasswd = mObj.regPasswd;
         // console.log(regPasswd);
-        regPasswd = common.md5(regPasswd + common.MD5_SUFFXIE);
+        // regPasswd = common.md5(regPasswd + common.MD5_SUFFXIE);
         const insUserInfo = `INSERT INTO user(user_name,login_password,user_number) VALUES('${regName}','${regPasswd}','${regName}')`;
         delReg(insUserInfo, res);
     });
