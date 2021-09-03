@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
 const common = require('../libs/common');
 const db = mysql.createPool({
     host: 'localhost',
@@ -155,9 +156,10 @@ module.exports = () => {
         });
     }
     // 用户注册
-    route.post('/reg', (req, res) => {
-        let regName = req.query.regName;
-        let regPasswd = req.query.regPasswd;
+    route.post('/reg', bodyParser.json(), (req, res) => {
+        console.log(req.body)
+        let regName = req.body.regName;
+        let regPasswd = req.body.regPasswd;
         console.log(regName,regPasswd);
         // let mObj = {};
         // for (let obj in req.body) {

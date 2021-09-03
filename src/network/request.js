@@ -1,7 +1,7 @@
 import axios from "axios";
 export function request(config){
     // 1.创建axios的实例
-    axios.defaults.headers['Content-Type'] = 'application/x-www/form/urlebcided'
+    // axios.defaults.headers['Content-Type'] = 'application/x-www/form/urlebcided'
     const instance1 = axios.create({
         baseURL:'http://localhost:3333',
         timeout:5000,
