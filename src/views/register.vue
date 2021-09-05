@@ -8,48 +8,43 @@
             this.$router.replace('/');
           }
         "
-         class="el-icon-arrow-left"  style="font-size:20px"
-      >
-      </div>
+        class="el-icon-arrow-left"
+        style="font-size: 20px"
+      ></div>
       <div slot="middle" class="loginFont">京东注册</div>
     </topnav>
     <div class="iptBox">
-      <input type="text" placeholder="请输入账号"  />
-      <input type="password" placeholder="请输入密码" />
+      <input type="text" placeholder="请输入账号" ref="username" />
+      <input type="password" placeholder="请输入密码" ref="password" />
       <input type="password" placeholder="请再次输入密码" />
-      <button>注册</button>
+      <button @click="registerInfo">注册</button>
     </div>
   </div>
 </template>
 
 <script>
 import Topnav from "../components/topNav/topnav.vue";
-import { request } from '../network/request';
+import { request } from "../network/request";
 export default {
-  data(){
-    return{
-      mObj:{
-        regName:'test',
-        regPasswd:'1234'
-      }
-    }
+  data() {
+    return {};
   },
   components: { Topnav },
-  mounted(){
-    request({
-      url:'/reg',
-      method:'post',
-      // headers: new Headers({
-      //       'Content-Type': 'application/x-www-form-urlencoded'  // 不进行header设置的默认格式
-      //     }),
-      data:{
-        regName:this.mObj.regName,
-        regPasswd:this.mObj.regPasswd
-      }
-    }).then(res=>{
-      console.log(res);
-    })
-  }
+  methods: {
+    registerInfo() {
+      request({
+        url: "/reg",
+        method: "post",
+        data: {
+          regName: this.$refs.username.value,
+          regPasswd: this.$refs.password.value,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+    },
+  },
+  mounted() {},
 };
 </script>
 

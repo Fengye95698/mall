@@ -8,21 +8,27 @@
           placeholder="搜索"
           class="Searchipt"
           prefix-icon="el-icon-search"
+          ref="search"
+          v-model="input"
+          @change="getSearch"
         />
       </div>
       <div slot="right" class="icon"></div>
     </topnav>
     <tabbar></tabbar>
-    <el-tabs
-      :tab-position="tabPosition"
-      class="el-tabs"
-      @tab-click="getCateGoods(categorylist[currentIndex].category_id)"
-    >
-      <el-tab-pane
-        :label="item.category_name"
-        v-for="item in categorylist"
-        :key="item.product_id"
-      >
+    <div class="contentBox">
+      <div class="left">
+        <van-sidebar v-model="key">
+          <van-sidebar-item
+            :title="item.category_name"
+            v-for="item in categorylist"
+            :key="item.category_id"
+            style="overflow-y: auto"
+            @click="getCateGoods(item.category_id)"
+          />
+        </van-sidebar>
+      </div>
+      <div class="right">
         <hot-cate></hot-cate>
         <div class="goodsItem">
           <div
@@ -35,12 +41,9 @@
             <div class="goodstext">{{ item.product_name }}</div>
           </div>
         </div>
-      </el-tab-pane>
-      <!-- <el-tab-pane label="手机">
-        
+      </div>
+    </div>
 
-      </el-tab-pane> -->
-    </el-tabs>
   </div>
 </template>
 
@@ -54,27 +57,39 @@ export default {
   data() {
     return {
       tabPosition: "left",
-      loading:false,
+      loading: false,
       count: 10,
-      currentIndex: 1,
       goodsList: [],
       categorylist: [],
+      input: "",
+      activeKey: 3,
+      key:0
     };
   },
   methods: {
-    getCateGoods(category_id) {
-      console.log(category_id);
-      this.currentIndex += 1;
+    getCateGoods(id) {
       request({
         url: "/categorygoods",
         params: {
-          mId: category_id,
+          mId: id,
         },
       }).then((res) => {
-        // console.log(res);
+        console.log(res);
         this.goodsList = res.data;
       });
     },
+    getSearch() {
+      request({
+        url: "/search",
+        params: {
+          kw: this.$refs.search.value,
+        },
+      }).then((res) => {
+        console.log(res);
+        this.goodsList = res.data;
+      });
+    },
+ 
     toDetail(id) {
       // console.log(this.$route.query.id);
       this.$router.push({
@@ -90,19 +105,19 @@ export default {
       url: "/category",
       method: "get",
     }).then((res) => {
-      // console.log(res);
-      this.categorylist = res.data;
+      console.log(res);
+      this.categorylist = res.data.reverse();
     });
     request({
       url: "/categorygoods",
       params: {
-        mId: 34,
+        mId: this.activeKey,
       },
     }).then((res) => {
       this.goodsList = res.data;
     });
-  }
-  }
+  },
+};
 </script>
 
 <style scoped>
@@ -133,7 +148,7 @@ export default {
 }
 .boxnav {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   text-align: center;
 }
 .Searchipt {
@@ -142,6 +157,13 @@ export default {
   width: 250px;
   border-radius: 5px; */
   margin-right: 10px;
+}
+.contentBox {
+  display: flex;
+  justify-content: space-between;
+}
+.left {
+  flex: 0;
 }
 </style>
 <style>

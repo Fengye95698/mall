@@ -5,7 +5,14 @@
         <span class="background"><div class="icon1"></div></span>
       </div>
       <div slot="middle" class="middle">
-        <el-input type="text" placeholder="搜索" prefix-icon="el-icon-search" />
+        <el-input
+          type="text"
+          placeholder="搜索"
+          prefix-icon="el-icon-search"
+          v-model="input"
+          @change="getSearch"
+          ref="search"
+        />
       </div>
       <div
         slot="right"
@@ -16,12 +23,14 @@
           }
         "
       >
-        登录
+        <div v-if="islogin" class="username">{{ username }}</div>
+        <div class="username">登录</div>
       </div>
     </topnav>
+
     <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
       <van-swipe-item v-for="item in swiperImg" :key="item">
-        <img :src='item' />
+        <img :src="item" />
       </van-swipe-item>
     </van-swipe>
     <home-cate ref="swiper"></home-cate>
@@ -45,22 +54,50 @@ import HomeCate from "../components/homeCate.vue";
 import MomentSale from "../components/momentSale.vue";
 import Recommend from "../components/recommend.vue";
 import Tabbar from "../components/tabbar/tabbar.vue";
+import { request } from '../network/request';
 
 export default {
   components: { topnav, HomeCate, MomentSale, Recommend, Tabbar },
   data() {
     return {
       swiperImg: [pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8],
+      username: this.$route.query.name,
+      islogin: this.$route.query.islogin,
+      input:''
     };
+  },
+  methods: {
+    getSearch() {
+      request({
+        url: "/search",
+        params: {
+          kw: this.$refs.search.value,
+        },
+        
+      }).then((res) => {
+        console.log(res);
+        // this.goodsList = res.data;
+      }).catch(err=>{
+        console.log('无法找到该关键字',err);
+      });
+    },
+  },
+  mounted() {
+    console.log(this.$route.query);
   },
 };
 </script>
 
 <style scoped>
+.username {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
 .my-swipe .van-swipe-item {
   position: relative;
 }
-.my-swipe .van-swipe-item >img{
+.my-swipe .van-swipe-item > img {
   width: 100%;
   height: 100%;
 }

@@ -13,7 +13,7 @@ server.all('*', function(req, res, next) {
 
     if (req.method == 'OPTIONS') {
         res.send(200);
-        /make the require of options turn back quickly/
+        // /make the require of options turn back quickly/
     } else {
         next();
     }

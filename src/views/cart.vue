@@ -90,23 +90,24 @@
       </div>
     </div>
     <van-checkbox-group v-model="result" ref="checkboxGroup" v-show="isAlive" style="height:1500px">
-      <van-checkbox :name="item.cart_id" class="item" label-disabled v-for="(item,index) in cartList" :key="item.cart_id" > 
+      <van-checkbox :name="item.id" class="item" label-disabled v-for="(item,index) in cartList" :key="item.cart_id" > 
         <div class="head">
-          <div class="sty" :class="{ active: isActive }">{{item.shop_name}}</div>
-          <span style="color: red">优惠券></span>
+          <div class="sty" :class="{ active: isActive }">{{item.name}}</div>
+          <!-- <span style="color: red;font-size:1px">优惠券></span> -->
         </div>
         <div class="contentbox">
+         
+
           <div class="sty">
             <div class="content">
-              <img :src="item.product_img_url" alt="" />
+              <img :src="item.image" alt="" />
               <div class="goodsdetail">
-                <div class="title">{{item.product_name}}</div>
-                <!-- <span class="descr">重量:0.45kg 颜色:AT800/16</span> -->
+                <div class="title">{{item.name}}</div>
                 <div class="price">
-                  <span>￥{{item.product_uprice}}</span>
+                  <span>￥{{item.price}}</span>
                   <div class="countInfo">
                     <button @click="addCount(index)">+</button>
-                    <span>{{ item.goods_num }}</span>
+                    <span>{{ item.count }}</span>
                     <button @click="subCount(index)">-</button>
                   </div>
                 </div>
@@ -119,7 +120,6 @@
           <img src="@/../static/cart/delete_down.png" alt="" />
         </div>
       </van-checkbox>
-      <!-- <van-checkbox name="c">复选框 c</van-checkbox> -->
     </van-checkbox-group>
     <div v-show="!isAlive">没有商品啦~~~~~</div>
   </div>
@@ -186,13 +186,16 @@ export default {
   },
   components: { topnav },
   mounted(){
-    request({
-      url:'/cart'
-    }).then(res=>{
-      console.log(res);
-      this.cartList = res.data;
-      console.log(this.cartList);
-    })
+    // request({
+    //   url:'/cart'
+    // }).then(res=>{
+    //   console.log(res);
+    //   this.cartList = res.data;
+    //   console.log(this.cartList);
+    // })
+    // console.log(this.$store.state.cartList);
+    this.cartList = this.$store.state.cartList
+    console.log(this.cartList);
   }
 };
 </script>
@@ -243,13 +246,13 @@ export default {
   border: none;
 }
 .item {
-  padding: 5px;
+  padding: 10px;
   box-shadow: 0px 2px rgb(211, 208, 208);
-  height: 190px;
+  height: 200px;
 }
 .head {
   display: flex;
-  justify-content: space-between;
+  justify-content:flex-start;
 }
 .content {
   display: flex;
@@ -313,6 +316,8 @@ export default {
 }
 .foot img {
   width: 55%;
+  position: relative;
+    bottom: 5px;
 }
 .boxnav {
   display: flex;
@@ -342,7 +347,7 @@ export default {
 }
 .sty {
   padding-top: 5%;
-  padding-left: 5%;
+  /* padding-left: 5%; */
   font-weight: bold;
 }
 .van-checkbox-group {

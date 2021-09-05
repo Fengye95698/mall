@@ -36,7 +36,7 @@
             <div class="el-icon-shopping-cart-2" style="font-size:22px"></div>
             <div @click="()=>{this.$router.push('/cart')}">购物车</div>
         </div>
-        <button class="add">加入购物车</button>
+        <button class="add" @click="addGoods">加入购物车</button>
         <button class="buy">立即购买</button>
     </div>
   </div>
@@ -53,12 +53,25 @@ export default {
     return{
       detailInfo:[
         {
+          product_id:'',
           imgUrl:'',
           product_name:'',
           product_uprice:'',
           product_detail:''
         }
       ]
+    }
+  },
+  methods:{
+    addGoods(){
+      // console.log(111);
+      const product = {}
+      product.id = this.detailInfo[0].product_id
+      product.image = this.detailInfo[0].imgUrl;
+      product.name = this.detailInfo[0].product_name;
+      product.price = this.detailInfo[0].product_uprice;
+      // console.log(product);
+      this.$store.commit('addCart',product)
     }
   },
   mounted() {
@@ -72,11 +85,12 @@ export default {
       console.log(
         res
       );
+      this.detailInfo[0].product_id = res.data[1][0].product_id
       this.detailInfo[0]['imgUrl'] = res.data[1][0].product_img_url
       this.detailInfo[0].product_name = res.data[1][0].product_name
       this.detailInfo[0].product_uprice = res.data[1][0].product_uprice
       this.detailInfo[0].product_detail = res.data[1][0].product_detail
-      console.log(this.detailInfo[0]['imgUrl']);
+      // console.log(this.detailInfo[0]['imgUrl']);
     })
   },
 };

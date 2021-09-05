@@ -157,10 +157,10 @@ module.exports = () => {
     }
     // 用户注册
     route.post('/reg', bodyParser.json(), (req, res) => {
-        console.log(req.body)
+        // console.log(req.body)
         let regName = req.body.regName;
         let regPasswd = req.body.regPasswd;
-        console.log(regName,regPasswd);
+        // console.log(regName,regPasswd);
         // let mObj = {};
         // for (let obj in req.body) {
         //     mObj = JSON.parse(obj);
@@ -186,16 +186,20 @@ module.exports = () => {
         })
     };
     // 登录
-    route.post('/login', (req, res) => {
+    route.post('/login',bodyParser.json(), (req, res) => {
 
         let mObj = {};
-        for (let obj in req.body) {
-            mObj = JSON.parse(obj);
-            console.log(mObj);
-        }
-        let username = mObj.loginName;
-        let password = common.md5(mObj.loginPawd + common.MD5_SUFFXIE);;
-        // console.log(username, mObj.passwd);
+        // console.log(req.body);
+        // for (let obj in req.body) {
+        //     mObj = JSON.parse(obj);
+        //     console.log(mObj);
+        // }
+        let username = req.body.loginName;
+        let password = req.body.loginPawd;
+        // let username = mObj.loginName;
+        // let password = mObj.loginPawd;
+        // let password = common.md5(mObj.loginPawd + common.MD5_SUFFXIE);;
+        // console.log(username, password);
         const selectUser = `SELECT * FROM user where user_name='${username}'`;
         db.query(selectUser, (err, data) => {
             if (err) {
@@ -203,8 +207,10 @@ module.exports = () => {
                 res.send({ 'msg': '服务器出错', 'status': 0 }).end();
             } else {
                 if (data.length == 0) {
+                    // console.log(data);
                     res.send({ 'msg': '该用户不存在', 'status': -1 }).end();
                 } else {
+                    // console.log(data);
                     let dataw = data[0];
                     //login sucess
                     if (dataw.login_password === password) {
