@@ -74,7 +74,7 @@ export default {
           mId: id,
         },
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.goodsList = res.data;
       });
     },
@@ -85,7 +85,7 @@ export default {
           kw: this.$refs.search.value,
         },
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.goodsList = res.data;
       });
     },
@@ -105,7 +105,7 @@ export default {
       url: "/category",
       method: "get",
     }).then((res) => {
-      console.log(res);
+      // console.log(res);
       this.categorylist = res.data.reverse();
     });
     request({

@@ -80,9 +80,16 @@
       <!-- <el-radio v-model="radio" label="3">全选</el-radio> -->
       <van-button type="primary" @click="checkAll">全选</van-button>
       <div class="buyItem">
-        <div class="left">
-          <h4>合计:￥537</h4>
-          <div class="sub">总额:￥537.80 立减:￥0.00</div>
+        <div class="left" v-if="$store.state.cartList.length>0">
+          <span>
+            <h4 v-if="$store.state.cartList.length>0">合计:￥{{$store.state.cartList[0].price*$store.state.cartList[0].count}}</h4>
+                        
+          </span>
+
+          <div class="sub">总额:￥{{$store.state.cartList[0].price*$store.state.cartList[0].count}} 立减:￥0.00</div>
+        </div>
+        <div class="left" v-else>合计:￥0
+          <div class="sub">总额:￥0 立减:￥0.00</div>
         </div>
         <div class="right">
           <button>去计算</button>
@@ -106,9 +113,9 @@
                 <div class="price">
                   <span>￥{{item.price}}</span>
                   <div class="countInfo">
-                    <button @click="addCount(index)">+</button>
+                    <button @click="addCount(item)">+</button>
                     <span>{{ item.count }}</span>
-                    <button @click="subCount(index)">-</button>
+                    <button @click="subCount(item)">-</button>
                   </div>
                 </div>
               </div>
@@ -163,39 +170,22 @@ export default {
       }
       
     },
-    addCount(index) {
-      // console.log(index);
-      for(let i = 0;i<this.cartList.length;i++){
-        if(i == index){
-          this.cartList[i].goods_num += 1
-          this.num+=1
-        }
-      }
-      
+    addCount(item) {
+      // console.log(item);
+      item.count += 1      
     },
-    subCount(index) {
-      if (this.num >= 1) {
-        for(let i = 0;i<this.cartList.length;i++){
-        if(i == index && this.cartList[i].goods_num>1){
-          this.cartList[i].goods_num -= 1
-          this.num -=1
-        }
+    subCount(item) {
+      // console.log(item);
+      if(item.count > 1){
+        item.count -= 1
       }
-      }
+
     },
   },
   components: { topnav },
   mounted(){
-    // request({
-    //   url:'/cart'
-    // }).then(res=>{
-    //   console.log(res);
-    //   this.cartList = res.data;
-    //   console.log(this.cartList);
-    // })
-    // console.log(this.$store.state.cartList);
     this.cartList = this.$store.state.cartList
-    console.log(this.cartList);
+    // console.log(this.cartList);
   }
 };
 </script>

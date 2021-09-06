@@ -71,20 +71,21 @@ export default {
       product.name = this.detailInfo[0].product_name;
       product.price = this.detailInfo[0].product_uprice;
       // console.log(product);
-      this.$store.commit('addCart',product)
+      this.$toast.success('加入购物车成功');
+      this.$store.commit('addCart',product);
+      
     }
   },
   mounted() {
     // console.log(this.$route);
+    // this.$toast('提示文案');
     request({
       url:'/detail',
       params:{
         mId:this.$route.query.mId
       }
     }).then(res=>{
-      console.log(
-        res
-      );
+      // console.log(res);
       this.detailInfo[0].product_id = res.data[1][0].product_id
       this.detailInfo[0]['imgUrl'] = res.data[1][0].product_img_url
       this.detailInfo[0].product_name = res.data[1][0].product_name
@@ -105,7 +106,7 @@ export default {
   text-align: center;
 }
 .box{box-shadow: .9px 10px rgb(243, 240, 240);}
-.box img{margin: 2%;}
+.box img{margin: 2%;width: 100%;height: 50%;}
 .context{padding: 10px;}
 .context h5{font-size: 18px;}
 .price{color: red;font-weight: bold;font-size: 20px;margin-top: 10px;display: flex;justify-content: space-between;}

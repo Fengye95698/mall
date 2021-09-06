@@ -48,11 +48,6 @@ const routes = [
     name:'Me',
     component:()=>import('../views/me')
   },
-  {
-    path:'/cateDetails',
-    name:'cateDetails',
-    component:()=>import('../components/rightSide')
-  }
   // {
   //   path: '/',
   //   name: 'Home',

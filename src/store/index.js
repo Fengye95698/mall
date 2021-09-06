@@ -8,7 +8,7 @@ const state = {
 }
 const mutations = {
   addCart(state,payload){
-    console.log(payload);
+    // console.log(payload);
     let isOldGoods = state.cartList.find(item=>item.id === payload.id)
     if(isOldGoods){
       isOldGoods.count += 1
