@@ -48,6 +48,16 @@ const routes = [
     name:'Me',
     component:()=>import('../views/me')
   },
+  {
+    path:'/address',
+    name:'Address',
+    component:()=>import('../views/address')
+  },
+  {
+    path:'/addAddress',
+    name:'addAddress',
+    component:()=>import('../views/addAddress')
+  }
   // {
   //   path: '/',
   //   name: 'Home',

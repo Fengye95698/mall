@@ -16,7 +16,7 @@
     </topnav>
     <div class="login">
       <span>登录后同步电脑与手机购物车中的商品</span>
-      <button>登录</button>
+      <button @click="()=>{this.$router.push('/login')}">登录</button>
     </div>
     <!-- <div class="item">
       <div class="head">
@@ -80,38 +80,58 @@
       <!-- <el-radio v-model="radio" label="3">全选</el-radio> -->
       <van-button type="primary" @click="checkAll">全选</van-button>
       <div class="buyItem">
-        <div class="left" v-if="$store.state.cartList.length>0">
-          <span>
-            <h4 v-if="$store.state.cartList.length>0">合计:￥{{$store.state.cartList[0].price*$store.state.cartList[0].count}}</h4>
-                        
-          </span>
+        <div class="left" v-if="$store.state.cartList.length > 0">
+          <h4 v-if="$store.state.cartList.length > 0">
+            合计:￥<!-- {{
+              $store.state.cartList[0].price * $store.state.cartList[0].count
+            }} -->
+            <span v-for="item in $store.state.cartList" :key="item">
+              {{item.price*item.count}}
+            </span>
+            <!-- {{getTotal}} -->
+          </h4>
 
-          <div class="sub">总额:￥{{$store.state.cartList[0].price*$store.state.cartList[0].count}} 立减:￥0.00</div>
+          <div class="sub">
+            总额:￥{{
+              $store.state.cartList[0].price * $store.state.cartList[0].count
+            }}
+            立减:￥0.00
+          </div>
         </div>
-        <div class="left" v-else>合计:￥0
+        <div class="left" v-else>
+          合计:￥0
           <div class="sub">总额:￥0 立减:￥0.00</div>
         </div>
         <div class="right">
-          <button>去计算</button>
+          <button @click="()=>{this.$router.push('/address')}">去计算</button>
         </div>
       </div>
     </div>
-    <van-checkbox-group v-model="result" ref="checkboxGroup" v-show="isAlive" style="height:1500px">
-      <van-checkbox :name="item.id" class="item" label-disabled v-for="(item,index) in cartList" :key="item.cart_id" > 
+    <van-checkbox-group
+      v-model="result"
+      ref="checkboxGroup"
+      v-show="isAlive"
+      style="height: 1500px"
+    >
+      <van-checkbox
+        :name="item.id"
+        class="item"
+        label-disabled
+        v-for="(item, index) in cartList"
+        :key="item.cart_id"
+      >
         <div class="head">
-          <div class="sty" :class="{ active: isActive }">{{item.name}}</div>
+          <div class="sty" :class="{ active: isActive }">{{ item.name }}</div>
           <!-- <span style="color: red;font-size:1px">优惠券></span> -->
         </div>
         <div class="contentbox">
-         
-
           <div class="sty">
             <div class="content">
               <img :src="item.image" alt="" />
               <div class="goodsdetail">
-                <div class="title">{{item.name}}</div>
+                <div class="title">{{ item.name }}</div>
                 <div class="price">
-                  <span>￥{{item.price}}</span>
+                  <span>￥{{ item.price }}</span>
                   <div class="countInfo">
                     <button @click="addCount(item)">+</button>
                     <span>{{ item.count }}</span>
@@ -134,7 +154,7 @@
 
 <script>
 import topnav from "../components/topNav/topnav.vue";
-import { request } from '../network/request';
+import { request } from "../network/request";
 export default {
   data() {
     return {
@@ -143,13 +163,14 @@ export default {
       isActive: false,
       num: 1,
       isAlive: true,
-      cartList:[]
+      cartList: [],
     };
   },
-  computed:{
-    getTotal(count,price){
-      return count*price;
-    }
+  computed: {
+    getTotal(item) {
+      let sum = 0;
+      return sum += item;
+    },
   },
   methods: {
     checkAll() {
@@ -158,35 +179,33 @@ export default {
     },
     clearGood(index) {
       // console.log(index);
-      for(let i = 0;i<this.cartList.length;i++){
-        if(i === index && this.cartList.length >0){
-          this.cartList.splice(i,1);
+      for (let i = 0; i < this.cartList.length; i++) {
+        if (i === index && this.cartList.length > 0) {
+          this.cartList.splice(i, 1);
           // console.log();
-          if(this.cartList.length == 0){
-            this.isAlive = !this.isAlive; 
+          if (this.cartList.length == 0) {
+            this.isAlive = !this.isAlive;
           }
         }
-        //  
+        //
       }
-      
     },
     addCount(item) {
       // console.log(item);
-      item.count += 1      
+      item.count += 1;
     },
     subCount(item) {
       // console.log(item);
-      if(item.count > 1){
-        item.count -= 1
+      if (item.count > 1) {
+        item.count -= 1;
       }
-
     },
   },
   components: { topnav },
-  mounted(){
-    this.cartList = this.$store.state.cartList
+  mounted() {
+    this.cartList = this.$store.state.cartList;
     // console.log(this.cartList);
-  }
+  },
 };
 </script>
 
@@ -242,7 +261,7 @@ export default {
 }
 .head {
   display: flex;
-  justify-content:flex-start;
+  justify-content: flex-start;
 }
 .content {
   display: flex;
@@ -307,7 +326,7 @@ export default {
 .foot img {
   width: 55%;
   position: relative;
-    bottom: 5px;
+  bottom: 5px;
 }
 .boxnav {
   display: flex;
